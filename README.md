@@ -142,3 +142,21 @@ mc-riscv-cluster/
 - Python 3.10+ with NumPy/SciPy/Matplotlib (reference model, BER/SNR analysis)
 - GTKWave for waveform debug
 
+## Verification Approach
+
+- **Reference model parity**: `verif/ref_model/baseband_chain.py` is a
+  floating-point NumPy implementation of the same pipeline; fixed-point
+  RTL/firmware output is compared against it within a defined error
+  bound at each stage (sync, channel estimation, demod).
+- **Per-stage unit tests**: each core's algorithm (sync, chan-est,
+  demod, mod) is validated in isolation against known test vectors
+  before integration.
+- **System-level tests**: full 4-stage pipeline run across cores with
+  injected AWGN + multipath channels at multiple SNR points; output
+  compared bit-for-bit against the reference model's recovered bits.
+- **Assertions (SVA)**: barrier/mailbox protocol correctness — no core
+  advances to the next pipeline stage before all producers signal
+  ready, no mailbox message is overwritten before being read.
+- **Metrics**: BER vs. SNR curve and recovered constellation plots are
+  generated automatically from regression output — a concrete,
+  visual pass/fail signal beyond "testbench passed."
