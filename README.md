@@ -55,3 +55,83 @@ synchronization — partitioned and parallelized across cores.
 ```
 
 ---
+
+## Repository Structure
+
+```
+mc-riscv-cluster/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── Makefile                          
+├── docs/
+│   ├── cluster_architecture.md
+│   ├── baseband_pipeline.md          # modulation/demod/chan-est/sync algorithm notes
+│   ├── workload_partitioning.md      # stage-to-core mapping, handoff protocol
+│   └── verification_plan.md          # test plan, BER/SNR validation methodology
+│
+├── rtl/
+│   ├── core/
+│   │   └── rv32im_core.sv            # single-core RTL (or submodule to an existing core)
+│   ├── cluster/
+│   │   ├── interconnect.sv           # crossbar / ring fabric
+│   │   ├── barrier_unit.sv           # hardware sync barriers
+│   │   ├── mailbox.sv                # inter-core message passing
+│   │   └── cluster_top.sv
+│   ├── mem/
+│   │   ├── core_local_mem.sv         # per-core scratchpad I/D memory
+│   │   └── shared_l2.sv
+│   ├── dma/
+│   │   └── streaming_dma.sv
+│   └── common/
+│       └── pkg_cluster_params.sv     # core count, mem sizes, interconnect topology
+│
+├── firmware/
+│   ├── common/
+│   │   ├── fixed_point.h             # Q-format fixed-point helpers
+│   │   └── mailbox_api.h
+│   ├── sync/
+│   │   └── sync_core.c                # CFO correction, timing sync (Gardner/early-late)
+│   ├── channel_est/
+│   │   └── chanest_core.c             # pilot-based LS/MMSE estimation
+│   ├── demod/
+│   │   └── demod_core.c               # matched filter + symbol detection
+│   ├── mod/
+│   │   └── mod_core.c                 # QPSK/16-QAM mapping, pulse shaping
+│   └── linker/
+│       └── cluster.ld
+│
+├── verif/
+│   ├── ref_model/
+│   │   ├── baseband_chain.py         # NumPy/SciPy floating-point reference pipeline
+│   │   └── channel_model.py          # AWGN + multipath channel injector for test vectors
+│   ├── tb/
+│   │   ├── core_tb.sv                # per-core ISA-level sim
+│   │   ├── cluster_tb.sv             # full-cluster system sim
+│   │   └── dma_tb.sv
+│   ├── sva/
+│   │   ├── barrier_assertions.sv     # no stage advances before all cores signal ready
+│   │   └── mailbox_assertions.sv     # no overwrite of unread mailbox message
+│   └── vectors/
+│       └── gen_test_vectors.py       # generates I/Q test vectors at target SNR points
+│
+├── sim/
+│   └── verilator/
+│       ├── Makefile
+│       └── sim_main.cpp
+│
+├── analysis/
+│   ├── ber_vs_snr.py                 # sweeps SNR, plots BER curve from sim output
+│   └── constellation_plot.py         # recovered constellation visualization
+│
+├── scripts/
+│   ├── build_firmware.sh
+│   └── run_regression.py
+│
+└── .github/
+    └── workflows/
+        └── ci.yml                    # lint + core-level smoke tests on push
+```
+
+---
+
