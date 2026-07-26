@@ -26,3 +26,32 @@ synchronization — partitioned and parallelized across cores.
   double-buffered handoff between stages
 - **Verification**: per-core ISA-level checks + system-level bit-exact
   comparison against a Python/NumPy floating-point reference chain
+
+## Architecture Overview
+
+```
+                         ┌────────────────────────┐
+   I/Q samples in ──────▶│   Streaming DMA Engine  │
+                         └───────────┬────────────┘
+                                     ▼
+                 ┌───────────────────────────────────┐
+                 │        Shared Interconnect          │  crossbar / ring
+                 │   (core-to-core + core-to-mem)      │
+                 └──┬───────┬───────┬───────┬──────────┘
+                    ▼       ▼       ▼       ▼
+              ┌─────────┐┌─────────┐┌─────────┐┌─────────┐
+              │ Core 0  ││ Core 1  ││ Core 2  ││ Core 3  │
+              │  Sync   ││ Channel ││ Demod   ││  (Mod / │
+              │ (CFO +  ││  Est.   ││(matched ││ spare / │
+              │ timing) ││ (LS/    ││ filter +││ control)│
+              │         ││  MMSE)  ││ detect) ││         │
+              └────┬────┘└────┬────┘└────┬────┘└────┬────┘
+                   │  hardware barrier / mailbox for   │
+                   └──── stage handoff (double-buffered)┘
+                                     ▼
+                         ┌────────────────────────┐
+                         │  Streaming DMA Engine   │──▶ recovered bits /
+                         └────────────────────────┘    constellation out
+```
+
+---
