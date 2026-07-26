@@ -135,3 +135,10 @@ mc-riscv-cluster/
 
 ---
 
+## Tools
+
+- Verilator ≥ 5.0
+- RISC-V GNU toolchain (`riscv32-unknown-elf-gcc`) — firmware per core
+- Python 3.10+ with NumPy/SciPy/Matplotlib (reference model, BER/SNR analysis)
+- GTKWave for waveform debug
+
