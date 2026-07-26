@@ -130,7 +130,7 @@ mc-riscv-cluster/
 │
 └── .github/
     └── workflows/
-        └── ci.yml                    # lint + core-level smoke tests on push
+        └── ci.yml                    
 ```
 
 ---
