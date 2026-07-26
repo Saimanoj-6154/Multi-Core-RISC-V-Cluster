@@ -74,46 +74,46 @@ mc-riscv-cluster/
 │   ├── core/
 │   │   └── rv32im_core.sv            
 │   ├── cluster/
-│   │   ├── interconnect.sv           # crossbar / ring fabric
-│   │   ├── barrier_unit.sv           # hardware sync barriers
-│   │   ├── mailbox.sv                # inter-core message passing
+│   │   ├── interconnect.sv           
+│   │   ├── barrier_unit.sv           
+│   │   ├── mailbox.sv                
 │   │   └── cluster_top.sv
 │   ├── mem/
-│   │   ├── core_local_mem.sv         # per-core scratchpad I/D memory
+│   │   ├── core_local_mem.sv         
 │   │   └── shared_l2.sv
 │   ├── dma/
 │   │   └── streaming_dma.sv
 │   └── common/
-│       └── pkg_cluster_params.sv     # core count, mem sizes, interconnect topology
+│       └── pkg_cluster_params.sv     
 │
 ├── firmware/
 │   ├── common/
-│   │   ├── fixed_point.h             # Q-format fixed-point helpers
+│   │   ├── fixed_point.h             
 │   │   └── mailbox_api.h
 │   ├── sync/
-│   │   └── sync_core.c                # CFO correction, timing sync (Gardner/early-late)
+│   │   └── sync_core.c               
 │   ├── channel_est/
-│   │   └── chanest_core.c             # pilot-based LS/MMSE estimation
+│   │   └── chanest_core.c             
 │   ├── demod/
-│   │   └── demod_core.c               # matched filter + symbol detection
+│   │   └── demod_core.c               
 │   ├── mod/
-│   │   └── mod_core.c                 # QPSK/16-QAM mapping, pulse shaping
+│   │   └── mod_core.c                 
 │   └── linker/
 │       └── cluster.ld
 │
 ├── verif/
 │   ├── ref_model/
-│   │   ├── baseband_chain.py         # NumPy/SciPy floating-point reference pipeline
-│   │   └── channel_model.py          # AWGN + multipath channel injector for test vectors
+│   │   ├── baseband_chain.py        
+│   │   └── channel_model.py         
 │   ├── tb/
-│   │   ├── core_tb.sv                # per-core ISA-level sim
-│   │   ├── cluster_tb.sv             # full-cluster system sim
+│   │   ├── core_tb.sv                
+│   │   ├── cluster_tb.sv            
 │   │   └── dma_tb.sv
 │   ├── sva/
-│   │   ├── barrier_assertions.sv     # no stage advances before all cores signal ready
-│   │   └── mailbox_assertions.sv     # no overwrite of unread mailbox message
+│   │   ├── barrier_assertions.sv     
+│   │   └── mailbox_assertions.sv     
 │   └── vectors/
-│       └── gen_test_vectors.py       # generates I/Q test vectors at target SNR points
+│       └── gen_test_vectors.py       
 │
 ├── sim/
 │   └── verilator/
@@ -121,8 +121,8 @@ mc-riscv-cluster/
 │       └── sim_main.cpp
 │
 ├── analysis/
-│   ├── ber_vs_snr.py                 # sweeps SNR, plots BER curve from sim output
-│   └── constellation_plot.py         # recovered constellation visualization
+│   ├── ber_vs_snr.py                 
+│   └── constellation_plot.py       
 │
 ├── scripts/
 │   ├── build_firmware.sh
