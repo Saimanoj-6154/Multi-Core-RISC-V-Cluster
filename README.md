@@ -66,13 +66,13 @@ mc-riscv-cluster/
 ├── Makefile                          
 ├── docs/
 │   ├── cluster_architecture.md
-│   ├── baseband_pipeline.md          # modulation/demod/chan-est/sync algorithm notes
-│   ├── workload_partitioning.md      # stage-to-core mapping, handoff protocol
-│   └── verification_plan.md          # test plan, BER/SNR validation methodology
+│   ├── baseband_pipeline.md          
+│   ├── workload_partitioning.md      
+│   └── verification_plan.md          
 │
 ├── rtl/
 │   ├── core/
-│   │   └── rv32im_core.sv            # single-core RTL (or submodule to an existing core)
+│   │   └── rv32im_core.sv            
 │   ├── cluster/
 │   │   ├── interconnect.sv           # crossbar / ring fabric
 │   │   ├── barrier_unit.sv           # hardware sync barriers
